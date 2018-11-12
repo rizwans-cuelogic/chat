@@ -17,7 +17,7 @@ class ChatInput extends React.Component {
 
     // Build a message object and send it
     const messageObj = {
-      Who: this.props.user.id,
+      Who: this.props.user._id,
       What: message,
       When: new Date().valueOf(),
     };
@@ -32,7 +32,7 @@ class ChatInput extends React.Component {
     debugger;
     const { user, users } = this.props;
     const { onSubmit } = this;  
-    const imgURL = '//robohash.org/' + user.id + '?set=set2&bgset=bg2&size=70x70';
+    const imgURL = '//robohash.org/' + user._id + '?set=set2&bgset=bg2&size=70x70';
     return (
       <footer className="teal">
         <form className="container" onSubmit={ onSubmit.bind(this) }>
@@ -42,7 +42,7 @@ class ChatInput extends React.Component {
               <input ref="txtMessage" type="text" placeholder="Type your message" />
               <span className="chip left">
                 <img src={ imgURL } />
-                <span>{ user.username }</span>
+                <span>{ user.userName }</span>
               </span>
             </div>
             <div className="input-field col s2">

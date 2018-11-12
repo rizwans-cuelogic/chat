@@ -21,6 +21,7 @@ function login(username, password) {
     return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
+            debugger;
             // login successful if there's a jwt token in the response
             if (user.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -55,13 +56,15 @@ function getById(id) {
 }
 
 function register(user) {
+    debugger;
+    //console.log(users)
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        headers: { 'Content-Type': 'application/json',"Access-Control-Allow-Origin": '*'},
+        body: JSON.stringify(user),
     };
 
-    return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/users/register`, requestOptions,).then(handleResponse);
 }
 
 function update(user) {

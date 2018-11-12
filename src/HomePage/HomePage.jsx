@@ -16,7 +16,7 @@ class HomePage extends React.Component {
             subscribe_key: 'sub-c-d2a5720a-1d1a-11e6-8b91-02ee2ddab7fe',
             ssl: (location.protocol.toLowerCase() === 'https:'),
           });
-          let channel ='channel'+this.props.user.id;
+          let channel ='channel'+this.props.user._id;
           this.PubNub.subscribe({
             channel: channel,
             message: (message,env,channel)=>{
@@ -65,7 +65,7 @@ class HomePage extends React.Component {
     sendInvitation(id){
         debugger;
         console.log("In accept invitation");
-        let channel = 'channel'+this.props.user.id+id
+        let channel = 'channel'+this.props.user._id+id
         let message = {
             invite:"This is invitation to chat",
             channel : channel
@@ -127,6 +127,7 @@ class HomePage extends React.Component {
         });
     }
     render() {
+        debugger;
         const { user, users } = this.props;
         return (
             <div className="col-md-6 col-md-offset-3">
@@ -137,14 +138,14 @@ class HomePage extends React.Component {
                 {users.items &&
                     <ul>
                         {users.items.map((userobj, index) =>
-                        (user.id !== userobj.id)?
-                            <li key={userobj.id}>
+                        (user._id !== userobj._id)?
+                            <li key={userobj._id}>
                                 <h3>{userobj.firstName + ' ' + userobj.lastName}</h3>
-                                <a href="#" onClick={()=>{{this.sendInvitation(userobj.id)}}}>message</a>
+                                <a href="#" onClick={()=>{{this.sendInvitation(userobj._id)}}}>message</a>
                                 {
                                     userobj.deleting ? <em> - Deleting...</em>
                                     : userobj.deleteError ? <span className="text-danger"> - ERROR: {userobj.deleteError}</span>
-                                    : <span> - <a onClick={this.handleDeleteUser(userobj.id)}>Delete</a></span>
+                                    : <span> - <a onClick={this.handleDeleteUser(userobj._id)}>Delete</a></span>
                                 }
                             </li>
                         : ""
