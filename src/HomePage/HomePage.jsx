@@ -11,6 +11,7 @@ class HomePage extends React.Component {
     componentDidMount() {
         debugger;
         this.props.dispatch(userActions.getAll());
+        this.props.dispatch(chatActions.getChannels());
         this.PubNub = PUBNUB.init({
             publish_key: 'pub-c-199f8cfb-5dd3-470f-baa7-d6cb52929ca4',
             subscribe_key: 'sub-c-d2a5720a-1d1a-11e6-8b91-02ee2ddab7fe',
@@ -39,6 +40,7 @@ class HomePage extends React.Component {
         try{
         this.props.messages.filter(msg=>{
             if(msg.hasOwnProperty('invite')){
+                let channel_exists= this.props.channels_b.filter(channel => (vendor.title === msg.channel));        
                 this.acceptInvitation(msg.channel);
                 throw BreakException; 
             }
@@ -66,6 +68,14 @@ class HomePage extends React.Component {
         debugger;
         console.log("In accept invitation");
         let channel = 'channel'+this.props.user._id+id
+        let channel_exists= this.props.channels_b.filter(channel => (vendor.title === channel));
+        if(channel_exists){
+            this.props.dispatch(chatActions.updateChannel(channel));
+            this.props.dispatch(chatActions.clearTimestamp());
+            //this.fetchHistory(channel);
+            this.redirectToMessage();    
+        }
+        else{
         let message = {
             invite:"This is invitation to chat",
             channel : channel
@@ -74,10 +84,11 @@ class HomePage extends React.Component {
             channel: 'channel'+id,
             message: message,
         });
-        this.props.dispatch(chatActions.updateChannel(channel));
-        this.props.dispatch(chatActions.clearTimestamp());
+            this.props.dispatch(chatActions.updateChannel(channel));
+            this.props.dispatch(chatActions.clearTimestamp());
         //this.fetchHistory(channel);
-        this.redirectToMessage();
+            this.redirectToMessage();
+        }
     }
     redirectToMessage(){
         debugger;
@@ -102,7 +113,7 @@ class HomePage extends React.Component {
             // and index 1 and 2 are start and end dates of the messages
             console.log("History Data.........",data);
             this.props.dispatch(chatActions.addHistory(data[0], data[1]));
-            //this.checkInvitations();
+            this.checkInvitations();
             console.log("messages....",this.props.messages);
           },
         });
@@ -162,13 +173,14 @@ class HomePage extends React.Component {
 function mapStateToProps(state) {
     const { users, authentication,chat } = state;
     const { user } = authentication;
-    const { messages, timestamp,channel} = chat;
+    const { messages, timestamp,channel,channels_b} = chat;
     return {
         user,
         users,
         messages,
         timestamp,
-        channel
+        channel,
+        channels_b
     };
 }
 

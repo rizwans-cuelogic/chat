@@ -1,5 +1,6 @@
 import  {chatConstants} from '../_constants';
 import { chatService } from '../_services';
+import { alertActions } from './';
 
 export const chatActions = {
     addHistory,
@@ -67,7 +68,8 @@ function getChannels(){
     return dispatch => {
         chatService.getChannels()
             .then(
-                channels => { 
+                channels => {
+                    debugger; 
                     dispatch(success(channels));
                 },
                 error => {

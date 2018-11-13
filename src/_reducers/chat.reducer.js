@@ -5,7 +5,8 @@ const INITIAL_STATE={
     messages : [],
     timestamp : null,
     channel : null,
-    showChat : false
+    showChat : false,
+    channels_b:[]
 }
 export function chat (state=INITIAL_STATE,action){
     console.log("In chat reducer",action.type);
@@ -39,6 +40,7 @@ export function chat (state=INITIAL_STATE,action){
         }
         case chatConstants.CHANNEL_SUCCESS:
             return {
+                ...state,
                 channels_b: action.channel
             };
         case chatConstants.CHANNEL_FAILURE:
