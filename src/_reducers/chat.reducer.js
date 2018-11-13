@@ -36,7 +36,18 @@ export function chat (state=INITIAL_STATE,action){
         return{
             ...state,
             timestamp:null
-        }        
+        }
+        case chatConstants.CHANNEL_SUCCESS:
+            return {
+                channels_b: action.channel
+            };
+        case chatConstants.CHANNEL_FAILURE:
+            return {};        
+
+        case chatConstants.CHAT_ALL_SUCCESS:
+            return {
+                channels: action.channels
+            };    
         default:
             return state;
     }

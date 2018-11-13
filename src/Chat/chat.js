@@ -40,8 +40,6 @@ class Chat extends React.Component{
           start: this.props.timestamp,
           callback: (data) => {
               debugger;
-            // data is Array(3), where index 0 is an array of messages
-            // and index 1 and 2 are start and end dates of the messages
             console.log("History Data.........",data);
             this.props.dispatch(chatActions.addHistory(data[0], data[1]));
             console.log("messages....",this.props.messages);

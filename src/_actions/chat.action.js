@@ -1,11 +1,14 @@
 import  {chatConstants} from '../_constants';
+import { chatService } from '../_services';
 
 export const chatActions = {
     addHistory,
     addMessage,
     updateChannel, 
     clearMessages,
-    clearTimestamp
+    clearTimestamp,
+    insertChannel,
+    getChannels
 }
 
 function addHistory(messages, timestamp) {
@@ -43,3 +46,37 @@ function clearTimestamp(){
   }
 
 }
+function insertChannel(channel,sender,chatWith){
+    return dispatch => {
+        chatService.insertChannel(channel,sender,chatWith)
+            .then(
+                channel => { 
+                    dispatch(success(channel));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function success(chat) { return { type: chatConstants.CHANNEL_SUCCESS, chat } }
+    function failure(error) { return { type: chatConstants.CHANNEL_FAILURE, error } }
+}
+function getChannels(){
+    return dispatch => {
+        chatService.getChannels()
+            .then(
+                channels => { 
+                    dispatch(success(channels));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+    function success(channels) { return { type: chatConstants.CHANNEL_ALL_SUCCESS, channels } }
+    function failure(error) { return { type: chatConstants.CHANNEL_ALL_FAILURE, error } }
+}
+
