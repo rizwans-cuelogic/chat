@@ -66,6 +66,7 @@ function insertChannel(channel,sender,chatWith){
     function failure(error) { debugger ;return { type: chatConstants.CHANNEL_FAILURE, error } }
 }
 function getChannels(){
+    debugger;
     return dispatch => {
         chatService.getChannels()
             .then(

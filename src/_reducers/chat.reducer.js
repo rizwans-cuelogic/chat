@@ -1,4 +1,4 @@
-import  {chatConstants} from '../_constants';
+import  {chatConstants,alertConstants} from '../_constants';
 import { chatActions } from '../_actions';
 
 const INITIAL_STATE={
@@ -54,8 +54,14 @@ export function chat (state=INITIAL_STATE,action){
             return {
                 ...state,
                 channels_b: action.channels
-            };    
+            };
+        case alertConstants.CLEAR:
+            return{
+                ...state
+            }    
         default:
-            return state;
+            return {
+                ...state
+            };
     }
 }

@@ -1,9 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import * as ReactDOM from 'react-dom';
 
 class ChatHistory extends React.Component {
-
+    constructor(props) {
+        super(props);
+        console.log(this.props)
+    }
     componentWillUpdate(nextProps) {
     debugger;  
     this.historyChanged = nextProps.messages.length !== this.props.messages.length;
@@ -40,11 +43,31 @@ class ChatHistory extends React.Component {
     }
   };
 
+  channelHandler(channel){
+    debugger;
+    this.props.change_channel(channel);
+  }
+
   render() {
     debugger;
-    const { messages, onScroll } = this.props;
+    const {user,users,channel,messages,channels_b} = this.props;
     return (
-      <ul className="collection" ref="messageList" onScroll={ onScroll }>
+      <div>
+      <div className="col-sm-4">
+             <ul className="collection_channels" ref="messageList">
+            { channels_b.map((channels) => {
+            return (
+                <li className="collection-item avatar" key={ channels.title }>
+                <p>
+                    <a href=""  onClick={()=>this.channelHandler(channels)}><span>{(channel!==channels.title)?(channels.createdBy===user._id)?channels.chatWith:channels.createdBy:""}</span></a>
+                </p>
+            </li>
+          );
+        }) }
+      </ul>
+      </div>
+    <div className="col-sm-8">
+      <ul className="collection" ref="messageList" onScroll={this.onScroll.bind(this)}>
         { messages.map((messageObj) => {
           const imgURL = '//robohash.org/' + messageObj.Who + '?set=set2&bgset=bg2&size=70x70';
           const messageDate = new Date(messageObj.When);
@@ -64,6 +87,8 @@ class ChatHistory extends React.Component {
           );
         }) }
       </ul>
+    </div>
+    </div>
     );
   }
   

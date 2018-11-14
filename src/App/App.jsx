@@ -15,10 +15,8 @@ class App extends React.Component {
         super(props);
 
         const { dispatch } = this.props;
-        history.listen((location, action) => {
-            // clear alert on location change
-            dispatch(alertActions.clear());
-        });
+
+        
     }
 
     render() {
@@ -26,14 +24,14 @@ class App extends React.Component {
         return (
             <div className="jumbotron">
                 <div className="container">
-                    <div className="col-sm-8 col-sm-offset-2">
+                    <div className="col-sm-12">
                         {alert.message &&
                             <div className={`alert ${alert.type}`}>{alert.message}</div>
                         }
                         <Router history={history}>
                             <div>
                                 <PrivateRoute exact path="/" component={HomePage} />
-                                <PrivateRoute exact path="/message" component={ Chat } sendMessage={HomePage.sendMessage} fetchHistory={HomePage.fetchHistory}/>
+                                <PrivateRoute exact path="/message" component={ Chat }/>
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/register" component={RegisterPage} />
                             </div>

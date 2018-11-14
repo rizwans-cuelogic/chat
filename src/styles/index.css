@@ -26,6 +26,11 @@ footer {
     overflow-y: scroll;
     height: 80vh;
   }
+ .collection_channels {
+    margin: 0 200px 130px 0;
+    height: 80vh;
+  }
+  
   
   .message-date {
     color: #585858;

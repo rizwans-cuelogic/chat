@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {ChatInput} from '../Chat';
-import {ChatHistory} from '../Chat';
+import {ChatHistory,ChatList} from '../Chat';
 import { userActions,chatActions } from '../_actions';
 
   
@@ -10,6 +10,7 @@ class Chat extends React.Component{
     constructor(props){
         debugger;
         super(props);
+        this.props.dispatch(chatActions.getChannels());
     }
     componentDidMount() {
         debugger;
@@ -29,7 +30,8 @@ class Chat extends React.Component{
         })
         this.fetchHistory(this.props.channel);
         this.fetchHistory = this.fetchHistory.bind(this);
-        this.sendMessage = this.sendMessage.bind(this);        
+        this.sendMessage = this.sendMessage.bind(this);
+        this.change_channel = this.change_channel.bind(this);        
     }
     fetchHistory(){
         debugger;
@@ -54,28 +56,41 @@ class Chat extends React.Component{
           message: message,
         });
     }
+    change_channel(channel){
+        debugger;
+        this.props.dispatch(chatActions.getChannels());
+        this.props.dispatch(chatActions.updateChannel(channel.title));
+        this.props.dispatch(chatActions.clearMessages());
+        this.props.dispatch(chatActions.clearTimestamp());
+        this.props.history.push('/messages');
+    }
    
     render(){
-        const {sendMessage,fetchHistory} = this;
-        const {user,users,messages,timestamp}= this.props; 
+        debugger;
+        const {sendMessage,fetchHistory,change_channel} = this;
+        const {user,users,messages,timestamp,channels_b}= this.props; 
         return (
         <div>
-            <ChatHistory user={user} users={users} messages={messages} timestamp={timestamp} fetchHistory={fetchHistory}/>
-            <ChatInput user={user} users={users} messages={messages} timestamp={timestamp} sendMessage={sendMessage}/>
-        </div>)
+            <div className="col-sm-12">
+                <ChatHistory user={user} users={users} messages={messages} timestamp={timestamp} fetchHistory={fetchHistory} channels_b={channels_b} change_channel={change_channel}/>
+                <ChatInput user={user} users={users} messages={messages} timestamp={timestamp} sendMessage={sendMessage}/>
+            </div>
+        </div>
+        )
     }
 }
 function mapStateToProps(state) {
     const { users, authentication,chat } = state;
     const { user } = authentication;
-    const { messages, timestamp,channel,showChat } = chat;
+    const { messages, timestamp,channel,showChat,channels_b } = chat;
     return {
         user,
         users,
         messages,
         timestamp,
         channel,
-        showChat
+        showChat,
+        channels_b
     };
 }
 
