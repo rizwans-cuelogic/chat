@@ -22,9 +22,9 @@ class HomePage extends React.Component {
             channel: channel,
             message: (message,env,channel)=>{
                 debugger;
-                if(message.hasOwnProperty('invite')){
-                    this.acceptInvitation(message.channel);    
-                }
+                // if(message.hasOwnProperty('invite')){
+                //     this.acceptInvitation(message.channel);    
+                // }
                 this.props.dispatch(chatActions.addMessage(message));
             }   
         });
@@ -35,42 +35,28 @@ class HomePage extends React.Component {
         //this.sendMessage({ invite:"this is pubnub",channel:'channel123'});
 
     }
-    checkInvitations(){
-        debugger;
-        try{
-        this.props.messages.filter(msg=>{
-            if(msg.hasOwnProperty('invite')){
-                let channel_exists= this.props.channels_b.filter(channel => (vendor.title === msg.channel));        
-                this.acceptInvitation(msg.channel);
-                throw BreakException; 
-            }
-        })
-        }
-        catch(e){
-            console.log("get channel ...... checkinvitation")
-        }
-    }
-    acceptInvitation(channel){
-        console.log("In accept invitation");
-        this.PubNub.subscribe({
-            channel:channel,
-            message : (message,env,channel)=>{
-                this.props.dispatch(chatActions.addMessage(message));
-            }
-        });
-        this.props.dispatch(chatActions.updateChannel(channel));
-        this.props.dispatch(chatActions.clearMessages());
-        this.props.dispatch(chatActions.clearTimestamp());
-        this.fetchHistory(channel);
-        this.redirectToMessage();
-    }
+    // acceptInvitation(channel){
+    //     console.log("In accept invitation");
+    //     // this.PubNub.subscribe({
+    //     //     channel:channel,
+    //     //     message : (message,env,channel)=>{
+    //     //         this.props.dispatch(chatActions.addMessage(message));
+    //     //     }
+    //     // });
+    //     this.props.dispatch(chatActions.updateChannel(channel));
+    //     this.props.dispatch(chatActions.clearMessages());
+    //     this.props.dispatch(chatActions.clearTimestamp());
+    //     this.fetchHistory(channel);
+    //     this.redirectToMessage();
+    // }
     sendInvitation(id){
         debugger;
+        this.props.dispatch(chatActions.getChannels());
         console.log("In accept invitation");
         let channel = 'channel'+this.props.user._id+id
-        let channel_exists= this.props.channels_b.filter(channel => (vendor.title === channel));
-        if(channel_exists){
-            this.props.dispatch(chatActions.updateChannel(channel));
+        let channel_exists= this.props.channels_b.filter(channel_b => {debugger; return(channel_b.createdBy === id || channel_b.chatWith===id)});
+        if(channel_exists.length!==0){
+            this.props.dispatch(chatActions.updateChannel(channel_exists[0].title));
             this.props.dispatch(chatActions.clearTimestamp());
             //this.fetchHistory(channel);
             this.redirectToMessage();    
@@ -84,8 +70,10 @@ class HomePage extends React.Component {
             channel: 'channel'+id,
             message: message,
         });
-            this.props.dispatch(chatActions.updateChannel(channel));
-            this.props.dispatch(chatActions.clearTimestamp());
+        this.props.dispatch(chatActions.insertChannel(channel,this.props.user._id,id));
+        this.props.dispatch(chatActions.updateChannel(channel));
+        this.props.dispatch(chatActions.clearTimestamp());
+        this.props.dispatch(chatActions.getChannels());
         //this.fetchHistory(channel);
             this.redirectToMessage();
         }
@@ -113,7 +101,7 @@ class HomePage extends React.Component {
             // and index 1 and 2 are start and end dates of the messages
             console.log("History Data.........",data);
             this.props.dispatch(chatActions.addHistory(data[0], data[1]));
-            this.checkInvitations();
+            //this.checkInvitations();
             console.log("messages....",this.props.messages);
           },
         });

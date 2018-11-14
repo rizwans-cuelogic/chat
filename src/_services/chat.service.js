@@ -8,22 +8,25 @@ export const chatService = {
 
 
 function insertChannel(channel,sender,chatWith){
+    debugger;
+    let headers =authHeader();
+    headers['Content-Type'] = 'application/json'
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 'title':channel,sender,chatWith})
+        headers: headers,
+        body: JSON.stringify({ 'title':channel,'createdBy':sender,'chatWith':chatWith})
     };
 
     return fetch(`${config.apiUrl}/chat`, requestOptions)
         .then(handleResponse)
-        .then(chat => {
+        .then(channel_chat => {
             debugger;
             // login successful if there's a jwt token in the response
-            if (chat.id) {
+            if (channel_chat) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('chat', JSON.stringify(user));
+                localStorage.setItem('channel_insert', JSON.stringify(channel_chat));
             }
-            return chat;
+            return channel_chat;
         });
 
 

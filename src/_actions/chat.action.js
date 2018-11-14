@@ -48,11 +48,12 @@ function clearTimestamp(){
 
 }
 function insertChannel(channel,sender,chatWith){
+    debugger;
     return dispatch => {
         chatService.insertChannel(channel,sender,chatWith)
             .then(
-                channel => { 
-                    dispatch(success(channel));
+                channel_chat => { 
+                    dispatch(success(channel_chat));
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -61,8 +62,8 @@ function insertChannel(channel,sender,chatWith){
             );
     };
 
-    function success(chat) { return { type: chatConstants.CHANNEL_SUCCESS, chat } }
-    function failure(error) { return { type: chatConstants.CHANNEL_FAILURE, error } }
+    function success(channel_chat) { debugger; return { type: chatConstants.CHANNEL_SUCCESS, channel_chat } }
+    function failure(error) { debugger ;return { type: chatConstants.CHANNEL_FAILURE, error } }
 }
 function getChannels(){
     return dispatch => {
@@ -78,7 +79,7 @@ function getChannels(){
                 }
             );
     };
-    function success(channels) { return { type: chatConstants.CHANNEL_ALL_SUCCESS, channels } }
+    function success(channels) { debugger ; return { type: chatConstants.CHANNEL_ALL_SUCCESS, channels } }
     function failure(error) { return { type: chatConstants.CHANNEL_ALL_FAILURE, error } }
 }
 

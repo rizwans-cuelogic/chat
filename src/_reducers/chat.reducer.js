@@ -6,9 +6,10 @@ const INITIAL_STATE={
     timestamp : null,
     channel : null,
     showChat : false,
-    channels_b:[]
+    insertChannel : null
 }
 export function chat (state=INITIAL_STATE,action){
+    debugger;
     console.log("In chat reducer",action.type);
     switch(action.type){
         case chatConstants.ADD_HISTORY:
@@ -41,14 +42,18 @@ export function chat (state=INITIAL_STATE,action){
         case chatConstants.CHANNEL_SUCCESS:
             return {
                 ...state,
-                channels_b: action.channel
+               insertChannel:chat
             };
         case chatConstants.CHANNEL_FAILURE:
-            return {};        
-
-        case chatConstants.CHAT_ALL_SUCCESS:
             return {
-                channels: action.channels
+                ...state
+            };        
+
+        case chatConstants.CHANNEL_ALL_SUCCESS:
+            debugger;
+            return {
+                ...state,
+                channels_b: action.channels
             };    
         default:
             return state;
