@@ -10,6 +10,7 @@
     "start": "webpack-dev-server --open"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "history": "^4.6.3",
     "raw-loader": "^0.5.1",
     "react": "^16.0.0",

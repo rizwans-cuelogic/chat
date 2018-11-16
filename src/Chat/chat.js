@@ -10,10 +10,9 @@ class Chat extends React.Component{
     constructor(props){
         debugger;
         super(props);
-        this.props.dispatch(chatActions.getChannels());
     }
     componentDidMount() {
-        debugger;
+
         console.log("Constructor");
         this.PubNub = PUBNUB.init({
             publish_key: 'pub-c-199f8cfb-5dd3-470f-baa7-d6cb52929ca4',
@@ -29,6 +28,13 @@ class Chat extends React.Component{
             }   
         })
         this.fetchHistory(this.props.channel);
+        this.props.dispatch(chatActions.getChannels());
+        this.props.dispatch(chatActions.updateChannel(this.props.channel));
+        
+        localStorage.setItem("channels_b", JSON.stringify(this.props.channels_b));
+        localStorage.channel = this.props.channel;
+
+
         this.fetchHistory = this.fetchHistory.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
         this.change_channel = this.change_channel.bind(this);        
@@ -58,11 +64,11 @@ class Chat extends React.Component{
     }
     change_channel(channel){
         debugger;
-        this.props.dispatch(chatActions.getChannels());
-        this.props.dispatch(chatActions.updateChannel(channel.title));
         this.props.dispatch(chatActions.clearMessages());
         this.props.dispatch(chatActions.clearTimestamp());
-        this.props.history.push('/messages');
+        this.props.dispatch(chatActions.updateChannel(channel.title));
+        localStorage.setItem("channels_b", JSON.stringify(this.props.channels_b));
+        localStorage.channel = channel.title;
     }
    
     render(){

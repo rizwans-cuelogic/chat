@@ -74,6 +74,8 @@ class HomePage extends React.Component {
         this.props.dispatch(chatActions.updateChannel(channel));
         this.props.dispatch(chatActions.clearTimestamp());
         this.props.dispatch(chatActions.getChannels());
+        localStorage.setItem("channels_b", JSON.stringify(this.props.channels_b));
+        localStorage.channel = channel;
         //this.fetchHistory(channel);
             this.redirectToMessage();
         }

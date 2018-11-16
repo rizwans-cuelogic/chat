@@ -4,9 +4,10 @@ import { chatActions } from '../_actions';
 const INITIAL_STATE={
     messages : [],
     timestamp : null,
-    channel : null,
+    channel : localStorage.getItem('channel') || null,
     showChat : false,
-    insertChannel : null
+    insertChannel : null,
+    channels_b : localStorage.getItem('channels_b')?JSON.parse(localStorage.getItem("channels_b")):[]
 }
 export function chat (state=INITIAL_STATE,action){
     debugger;

@@ -59,7 +59,11 @@ class ChatHistory extends React.Component {
             return (
                 <li className="collection-item avatar" key={ channels.title }>
                 <p>
-                    <a href=""  onClick={()=>this.channelHandler(channels)}><span>{(channel!==channels.title)?(channels.createdBy===user._id)?channels.chatWith:channels.createdBy:""}</span></a>
+                    <a href=""  
+                    onClick={()=>this.channelHandler(channels)}>
+                    <span>
+                        {(channel!==channels.title)?
+                        (channels.createdBy===user._id)?channels.chatWith:channels.createdBy:""}</span></a>
                 </p>
             </li>
           );
